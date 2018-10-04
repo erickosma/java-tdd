@@ -1,7 +1,10 @@
 package br.com.leilao.dominio;
 
+import br.com.leilao.dominio.builder.CriadorDeLeilao;
 import org.junit.Test;
 
+import static br.com.leilao.dominio.matchers.TemUmLanceMatcher.temUmLance;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 
 public class LeilaoTest {
@@ -50,5 +53,17 @@ public class LeilaoTest {
         leilao.dobraLance(steveJobs);
 
         assertEquals(0, leilao.getLances().size());
+    }
+
+    @Test
+    public void leilaoTemUmLance() {
+        Usuario joao =  new Usuario("Steve Jobs");
+        Leilao leilao = new CriadorDeLeilao()
+                .para("Playstation 3 Novo")
+                .lance(joao, 2000)
+                .constroi();
+
+        Lance lance = new Lance(joao, 2000);
+        assertThat(leilao, temUmLance(lance));
     }
 }
